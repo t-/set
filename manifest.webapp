@@ -1,7 +1,7 @@
 {
   "name": "Bio.gy Set!",
   "description": "Warning: Highly addictive",
-  "launch_path": "/",
+  "launch_path": "/set/",
   "developer": {
     "name": "Timo Graen",
     "url": "http://www.bio.gy"
