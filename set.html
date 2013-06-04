@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>set</title>
+    <script src="js/jquery.min.js"></script>
+  </head>
+  <body style="background-color:rgb(236, 240, 241);">
+   <div id="game"></div>
+
+   <script type="text/javascript">
+    w=$(window).width()
+    h=$(window).height()
+    lwidth=2;
+    if (w>h){
+      w = w / 4 - 10
+      h = h / 3 - 10
+    }else{
+      w = w / 3 - 10
+      h = h / 4 - 10
+    }
+    //color=['192,57,43','142, 68, 173','46, 204, 113']
+    color=['255,0,0','50, 205, 50 ','0, 0, 255']
+    tone=[0.0,0.3,1.0]
+    shape=['triangle','circle','square']
+    number=[1,2,3]
+
+    for (var cc=0; cc<color.length; cc++){
+      for (var tt=0; tt<tone.length; tt++){
+        for (var nn=0; nn<number.length; nn++){
+          var c=document.createElement("canvas")
+          c.className="mem me"
+          c.style.width=w+"px";
+          c.style.height=h+"px";
+          c.width=w
+          c.height=h
+          var ctx=c.getContext("2d");
+          col_fill='rgba('+color[cc]+","+tone[tt]+')'
+          col_stroke='rgb('+color[cc]+')'
+          ctx.beginPath()
+            ctx.strokeStyle="rgba(51,51,51,0.3)"
+            ctx.fillStyle="rgb(255,255,255)"
+            ctx.rect(3,3,w-6,h-6)
+            ctx.lineWidth="0"
+            ctx.fill()
+          ctx.stroke()
+          ctx.beginPath()
+            ctx.fillStyle=col_fill
+            ctx.strokeStyle=col_stroke
+            ctx.lineWidth=lwidth
+            if (number[nn]==1){
+              //ctx.rect(w/3.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
+              ctx.moveTo(w/3.0+10,h/3.0+h/6.0);
+              ctx.bezierCurveTo(w/3.0+10,2*h/3.0, 2*w/3.0-10,2*h/3.0, 2*w/3.0-10,h/3.0+h/6.0);
+              ctx.bezierCurveTo(2*w/3.0-10,h/3  , w/3.0+10,h/3.0, w/3.0+10,h/3.0+h/6.0);
+            }else if(number[nn]==2){
+              //left
+              ctx.moveTo(w/6.0+10,h/3.0+h/6.0);
+              ctx.bezierCurveTo(w/6.0+10,2*h/3.0, w/6.0+w/3.0-10,2*h/3.0, w/6.0+w/3.0-10,h/3.0+h/6.0);
+              ctx.bezierCurveTo(w/6.0+w/3.0-10,h/3  , w/6.0+10,h/3.0, w/6.0+10,h/3.0+h/6.0)
+              //right
+              ctx.moveTo(2*w/3.0+10-w/6.0,h/3.0+h/6.0);
+              ctx.bezierCurveTo(2*w/3.0+10-w/6.0,2*h/3.0, 3*w/3.0-10-w/6.0,2*h/3.0, 3*w/3.0-10-w/6.0,h/3.0+h/6.0);
+              ctx.bezierCurveTo(3*w/3.0-10-w/6.0,h/3  , 2*w/3.0+10-w/6.0,h/3.0, 2*w/3.0+10-w/6.0,h/3.0+h/6.0);
+            }else if(number[nn]==3){
+              //center
+              ctx.moveTo(w/3.0+10,h/3.0+h/6.0);
+              ctx.bezierCurveTo(w/3.0+10,2*h/3.0, 2*w/3.0-10,2*h/3.0, 2*w/3.0-10,h/3.0+h/6.0);
+              ctx.bezierCurveTo(2*w/3.0-10,h/3  , w/3.0+10,h/3.0, w/3.0+10,h/3.0+h/6.0);
+              //left
+              ctx.moveTo(10,h/3.0+h/6.0);
+              ctx.bezierCurveTo(10,2*h/3.0, w/3.0-10,2*h/3.0, w/3.0-10,h/3.0+h/6.0);
+              ctx.bezierCurveTo(w/3.0-10,h/3  , 10,h/3.0, 10,h/3.0+h/6.0)
+              //right
+              ctx.moveTo(2*w/3.0+10,h/3.0+h/6.0);
+              ctx.bezierCurveTo(2*w/3.0+10,2*h/3.0, 3*w/3.0-10,2*h/3.0, 3*w/3.0-10,h/3.0+h/6.0);
+              ctx.bezierCurveTo(3*w/3.0-10,h/3  , 2*w/3.0+10,h/3.0, 2*w/3.0+10,h/3.0+h/6.0);
+            }
+            ctx.fill()
+            ctx.stroke()
+          document.getElementById("game").appendChild(c)
+        }
+      }
+    }    
+    
+    for (var cc=0; cc<color.length; cc++){
+      for (var tt=0; tt<tone.length; tt++){
+        for (var nn=0; nn<number.length; nn++){
+          var c=document.createElement("canvas")
+          c.className="mem me"
+          c.style.width=w+"px";
+          c.style.height=h+"px";
+          c.width=w
+          c.height=h
+          var context=c.getContext("2d");
+          context.beginPath()
+            context.strokeStyle="rgba(51,51,51,0.3)"
+            context.fillStyle="rgb(255,255,255)"
+            context.rect(3,3,w-6,h-6)
+            context.lineWidth="0"
+            context.fill()
+          context.stroke()  
+          context.fillStyle   = "rgba("+color[cc]+","+tone[tt]+")";
+          context.strokeStyle = "rgb("+color[cc]+")";
+          context.lineWidth   = lwidth;
+
+          if (number[nn]==3){
+          //mtop
+          context.beginPath();
+          context.moveTo(w/2, h/3.0+10); // give the (x,y) coordinates
+          context.lineTo(2*w/3.0-10, 2*h/3.0-5);
+          context.lineTo(w/3.0+10, 2*h/3.0-5);
+          context.lineTo(w/2, h/3.0+10);
+          context.fill();
+          context.stroke();
+          context.closePath();
+
+          //lowleft
+          context.beginPath();
+          context.moveTo(w/2-w/3.0, h/3.0+10); // give the (x,y) coordinates
+          context.lineTo(2*w/3.0-10-w/3.0, 2*h/3.0-5);
+          context.lineTo(w/3.0+10-w/3.0, 2*h/3.0-5);
+          context.lineTo(w/2-w/3.0, h/3.0+10);
+          context.fill();
+          context.stroke();
+          context.closePath();
+
+          //lowright
+          context.beginPath();
+          context.moveTo(w/2+w/3.0, h/3.0+10); // give the (x,y) coordinates
+          context.lineTo(2*w/3.0-10+w/3.0, 2*h/3.0-5);
+          context.lineTo(w/3.0+10+w/3.0, 2*h/3.0-5);
+          context.lineTo(w/2+w/3.0, h/3.0+10);
+          context.fill();
+          context.stroke();
+          context.closePath();
+
+          document.getElementById("game").appendChild(c)
+          }else if (number[nn]==1){
+          //mtop
+          context.beginPath();
+          context.moveTo(w/2, h/3.0+10); // give the (x,y) coordinates
+          context.lineTo(2*w/3.0-10, 2*h/3.0-5);
+          context.lineTo(w/3.0+10, 2*h/3.0-5);
+          context.lineTo(w/2, h/3.0+10);
+          context.fill();
+          context.stroke();
+          context.closePath();
+          document.getElementById("game").appendChild(c)            
+          }else if (number[nn]==2){
+          //lowleft
+          context.beginPath();
+          context.moveTo(w/2-w/6.0, h/3.0+10); // give the (x,y) coordinates
+          context.lineTo(2*w/3.0-10-w/6.0, 2*h/3.0-5);
+          context.lineTo(w/3.0+10-w/6.0, 2*h/3.0-5);
+          context.lineTo(w/2-w/6.0, h/3.0+10);
+          context.fill();
+          context.stroke();
+          context.closePath();
+
+          //lowright
+          context.beginPath();
+          context.moveTo(w/2+w/6.0, h/3.0+10); // give the (x,y) coordinates
+          context.lineTo(2*w/3.0-10+w/6.0, 2*h/3.0-5);
+          context.lineTo(w/3.0+10+w/6.0, 2*h/3.0-5);
+          context.lineTo(w/2+w/6.0, h/3.0+10);
+          context.fill();
+          context.stroke();
+          context.closePath();            
+          document.getElementById("game").appendChild(c)            
+          }
+        }
+      }
+    }
+    
+   	//$('.game').html('hello'+w+'h'+h)
+   	for (var cc=0; cc<color.length; cc++){
+      for (var tt=0; tt<tone.length; tt++){
+        for (var nn=0; nn<number.length; nn++){
+          var c=document.createElement("canvas")
+          c.className="mem me"
+          c.style.width=w+"px";
+          c.style.height=h+"px";
+          c.width=w
+          c.height=h
+          var ctx=c.getContext("2d");
+          col_fill='rgba('+color[cc]+","+tone[tt]+')'
+          col_stroke='rgb('+color[cc]+')'
+          ctx.beginPath()
+            ctx.strokeStyle="rgba(51,51,51,0.3)"
+            ctx.fillStyle="rgb(255,255,255)"
+            ctx.rect(3,3,w-6,h-6)
+            ctx.lineWidth="0"
+            ctx.fill()
+          ctx.stroke()
+          ctx.beginPath()
+            ctx.fillStyle=col_fill
+            ctx.strokeStyle=col_stroke
+            ctx.lineWidth=lwidth
+            if (number[nn]==1){
+              ctx.rect(w/3.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
+            }else if(number[nn]==2){
+              ctx.rect(w/6.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
+              ctx.rect(w/6.0+w/3.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
+            }else if(number[nn]==3){
+              ctx.rect(10,h/3.0+10,w/3.0-20,h/3.0-20);
+              ctx.rect(w/3.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
+              ctx.rect(2*w/3.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
+            }
+            ctx.fill()
+            ctx.stroke()
+          document.getElementById("game").appendChild(c)
+        }
+   		}
+   	}
+
+(function($) {
+
+$.fn.randomize = function(childElem) {
+  return this.each(function() {
+      var $this = $(this);
+      var elems = $this.children(childElem);
+
+      elems.sort(function() { return (Math.round(Math.random())-0.5); });  
+
+      $this.remove(childElem);  
+
+      for(var i=0; i < elems.length; i++)
+        $this.append(elems[i]);      
+
+  });    
+}
+})(jQuery);
+
+for (var i=0; i<20; i++){
+  $("#game").randomize(".mem");
+}
+
+$(".mem").each(function(index){
+  if(index<12){
+    console.log(index+' ')  
+  }else{
+    $(this).toggle()
+  }
+})
+   </script>    
+  </body>
+ </html>
