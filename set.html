@@ -3,33 +3,47 @@
   <head>
     <meta charset="utf-8">
     <title>set</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
     <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
   </head>
-  <body style="background-color:rgb(236, 240, 241);">
+  <body style="background-color:rgb(236, 240, 241);  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;">
+   <div class="hero-unit" id="results"> <h1>Scores:</h1>
+    <p><h2>Player 1: <span id="score"></span></h2></p>
+   </div>
    <div id="game"></div>
+   <div id="stack"></div>
 
    <script type="text/javascript">
+    score = 0
+    nselect = 0
+    selection = []
+    selectionJoin = []
     w=$(window).width()
     h=$(window).height()
-    lwidth=2;
+    lwidth="2"
     if (w>h){
-      w = w / 4 - 10
-      h = h / 3 - 10
+      w = w / 4 - 15
+      h = h / 3 - 15
     }else{
-      w = w / 3 - 10
-      h = h / 4 - 10
+      w = w / 3 - 15
+      h = h / 4 - 15
     }
     //color=['192,57,43','142, 68, 173','46, 204, 113']
     color=['255,0,0','50, 205, 50 ','0, 0, 255']
     tone=[0.0,0.3,1.0]
-    shape=['triangle','circle','square']
+    shape=['square','triangle','circle']
+
     number=[1,2,3]
 
     for (var cc=0; cc<color.length; cc++){
       for (var tt=0; tt<tone.length; tt++){
         for (var nn=0; nn<number.length; nn++){
           var c=document.createElement("canvas")
-          c.className="mem me"
+          c.className="mem shape3 color"+cc+" tone"+tt+" count"+nn
           c.style.width=w+"px";
           c.style.height=h+"px";
           c.width=w
@@ -87,7 +101,7 @@
       for (var tt=0; tt<tone.length; tt++){
         for (var nn=0; nn<number.length; nn++){
           var c=document.createElement("canvas")
-          c.className="mem me"
+          c.className="mem shape2 color"+cc+" tone"+tt+" count"+nn
           c.style.width=w+"px";
           c.style.height=h+"px";
           c.width=w
@@ -178,7 +192,8 @@
       for (var tt=0; tt<tone.length; tt++){
         for (var nn=0; nn<number.length; nn++){
           var c=document.createElement("canvas")
-          c.className="mem me"
+          c.className="mem shape1 color"+cc+" tone"+tt+" count"+nn
+          c.style.padding="0px 0px 0px 0px"
           c.style.width=w+"px";
           c.style.height=h+"px";
           c.width=w
@@ -232,15 +247,119 @@ $.fn.randomize = function(childElem) {
 }
 })(jQuery);
 
+(function($) {
+  $.fn.render = function() {
+    $(".hero-unit").hide()
+    $("#game").show()
+    this.each(function(index){
+    if (index>11){
+      $(this).hide()
+    }else{
+      $(this).show()
+    }
+    })
+  }
+})(jQuery);
+
+(function ($) {
+    $.fn.classes = function (callback) {
+        var classes = [];
+        $.each(this, function (i, v) {
+            var splitClassName = v.className.split(/\s+/);
+            for (var j in splitClassName) {
+                var className = splitClassName[j];
+                if ('' !== className) {
+                    classes.push(className); // replace with 'classes.unshift(className);' to put classes in order of their appearance
+                }
+            }
+        });
+        if ('function' === typeof callback) {
+            for (var i in classes) {
+                callback(classes[i]);
+            }
+        }
+        return classes;
+    };
+})(jQuery);
+
 for (var i=0; i<20; i++){
   $("#game").randomize(".mem");
 }
 
-$(".mem").each(function(index){
-  if(index<12){
-    console.log(index+' ')  
-  }else{
-    $(this).toggle()
+$(".hero-unit").click(function(){
+  $(".mem").render()
+})
+
+$(".mem").render()
+
+   function array_unique(arrayName) {
+      var newArray = new Array();
+      label:for(var i=0; i<arrayName.length;i++ ) { 
+         for(var j=0; j<newArray.length;j++ ) {
+            if(newArray[j] == arrayName[i])
+               continue label;
+         }
+         newArray[newArray.length] = arrayName[i];
+      }
+      return newArray;
+   }
+
+function CheckSelection(){
+  kill = false
+  for (var i=0; i<4; i++){
+    console.log("property "+i)
+    if ((selection[0][i]==selection[1][i] && selection[1][i]==selection[2][i]) || (selection[0][i]!=selection[1][i] && selection[1][i]!=selection[2][i] && selection[0][i]!=selection[2][i]) ){
+      kill = false
+      console.log("property "+i+" correct")
+    }else{
+      kill = true
+    }
+    if (kill==true){
+      console.log("wrong!")
+      return false
+    }
+  }
+  if (kill==false){
+    return true
+  }
+}
+
+$(".mem").click(function(){
+  nselect += 1
+  $(this).css("border-style","solid")
+  $(this).css("border-width","2")
+  $(this).css("padding","0px 0px 0px 0px")
+  var sel = $(this).classes()
+  var seljoin = '.'+sel.join(".")
+  selection.push(sel)
+  selectionJoin.push(seljoin)
+  selection = array_unique(selection)
+  selectionJoin = array_unique(selectionJoin)
+  if (selectionJoin.length==3){
+      ans = CheckSelection()
+      if (ans==true){
+        score += 1
+        for (var i=0;i<3;i++){
+          $(selectionJoin[i]).css("border-style","none").prependTo("#stack")  
+        }
+        $("#score").html(score)
+        $("#game").hide()
+        $("#stack").show()
+        $(".hero-unit").show()
+        console.log("alles richtig")
+      }else{
+        console.log("wrong answer")
+        score-=1
+        $("#score").html(score)
+        $("#game").hide()
+        $("#stack").show()
+        $(".hero-unit").show()        
+        for (var i=0;i<3;i++){
+          $(selectionJoin[i]).css("border-style","none")
+        }
+      }
+    selectionJoin=[]
+    selection=[]
   }
 })
    </script>    
