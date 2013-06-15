@@ -1,10 +1,10 @@
 {
   "name": "Bio.gy Set!",
   "description": "Warning: Highly addictive",
-  "launch_path": "/set/",
+  "launch_path": "/set",
   "developer": {
     "name": "Timo Graen",
-    "url": "http://www.bio.gy"
+    "url": "http://t-.github.io"
   },
   "default_locale": "en"
 }
