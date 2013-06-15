@@ -11,10 +11,9 @@
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;">
-
   <div id="moveCorrect" class="alert alert-block alert-success">
    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <h1>Correct!</h1>
+    <h1 id="moveText">Correct!</h1>
     <div class="row">
       <div class="span3 offset2">
         slide1
@@ -28,23 +27,7 @@
     </div>
   </div>
 
-  <div id="moveWrong" class="alert alert-block alert-error">
-   <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <h1>Wrong!</h1>
-    <div class="row">
-      <div class="span3 offset2">
-        slide1
-      </div>
-      <div class="span3">
-        slide2
-      </div>
-      <div class="span3">
-        slide3
-      </div>
-    </div>    
-  </div>    
-
-  <div class="well">
+  <div id="results" class="well">
    <button type="button" class="close" data-dismiss="alert">&times;</button>
     <div class="row">
       <div class="span4">
@@ -62,7 +45,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr id="player1">
               <td>1</td>
               <td>Rob</td>
               <td>0</td>

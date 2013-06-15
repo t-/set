@@ -11,14 +11,78 @@
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;">
-   <div class="hero-unit" id="results"> <h1>Scores:</h1>
-    <p><h2>Player 1: <span id="score"></span></h2></p>
-   </div>
+
+  <div class="row" id="playerSelect">
+    <button id="p1" class="btn btn-large btn-block btn-primary" type="button">Player 1</button>
+    <button id="p2" class="btn btn-large btn-block btn-success" type="button">Player 2</button>
+    <button id="p3" class="btn btn-large btn-block btn-warning" type="button">Player 3</button>
+    <button id="p4" class="btn btn-large btn-block btn-danger" type="button">Player 4</button>
+  </div>
+
+  <div id="results" class="well">
+   <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <div id="move" class="alert alert-block alert-success">
+     <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <h1 id="moveText">Correct!</h1>
+      <div class="row">
+        <div class="span12">
+          slide1
+          slide2
+          slide3
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span4">
+        <h1>
+          Scores:
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span8">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Player</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Rob</td>
+              <td id="score1">0</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Tom</td>
+              <td id="score2">0</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Fin</td>
+              <td id="score3">0</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Bob</td>
+              <td id="score4">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>     
+    </div>
+  </div>            
+
+
    <div id="game"></div>
    <div id="stack"></div>
 
    <script type="text/javascript">
-    score = 0
+    CurrentPlayer=0
     nselect = 0
     selection = []
     selectionJoin = []
@@ -251,7 +315,6 @@ $.fn.randomize = function(childElem) {
 
 (function($) {
   $.fn.render = function() {
-    $(".hero-unit").hide()
     $("#game").show()
     this.each(function(index){
     if (index>11){
@@ -288,12 +351,35 @@ for (var i=0; i<20; i++){
   $("#game").randomize(".mem");
 }
 
-$(".hero-unit").click(function(){
-  $(".mem").render()
+$("#p1").click(function(){
+  $("#playerSelect").hide()
+  CurrentPlayer="1"
+  $("#results").show()
 })
 
-$(".mem").render()
+$("#p2").click(function(){
+  $("#playerSelect").hide()
+  CurrentPlayer="2"
+  $("#results").show()  
+})
 
+$("#p3").click(function(){
+  $("#playerSelect").hide()
+  CurrentPlayer="3"
+  $("#results").show()
+})
+
+$("#p4").click(function(){
+  $("#playerSelect").hide()
+  CurrentPlayer="4"
+  $("#results").show()
+})
+
+
+   $(".mem").render()
+   $("#playerSelect").hide()
+   $("#results").hide(   )
+   
    function array_unique(arrayName) {
       var newArray = new Array();
       label:for(var i=0; i<arrayName.length;i++ ) { 
@@ -340,22 +426,23 @@ $(".mem").click(function(){
   if (selectionJoin.length==3){
       ans = CheckSelection()
       if (ans==true){
-        score += 1
         for (var i=0;i<3;i++){
           $(selectionJoin[i]).css("border-style","none").prependTo("#stack")  
         }
-        $("#score").html(score)
+        $("#playerSelect").show()
         $("#game").hide()
-        $("#stack").show()
-        $(".hero-unit").show()
+        $("#stack").hide()
+        aval=$("#score"+CurrentPlayer).text()
+        console.log(aval,CurrentPlayer)
+        $("#score"+CurrentPlayer).text(aval+1)
         console.log("alles richtig")
       }else{
         console.log("wrong answer")
-        score-=1
-        $("#score").html(score)
+        $("#playerSelect").show()
         $("#game").hide()
-        $("#stack").show()
-        $(".hero-unit").show()        
+        $("#stack").hide()
+        aval=$("#score"+CurrentPlayer).text()
+        $("#score"+aval).text(aval-1) 
         for (var i=0;i<3;i++){
           $(selectionJoin[i]).css("border-style","none")
         }
