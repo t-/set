@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>set</title>
     <link href="stylesheets/bootstrap.css" rel="stylesheet">
-    <script src="javascriptsjavascripts/jquery.min.js"></script>
+    <script src="javascripts/jquery.min.js"></script>
     <script src="javascripts/bootstrap.min.js"></script>
   </head>
   <body style="background-color:rgb(236, 240, 241);  -moz-user-select: none;
@@ -12,25 +12,26 @@
   -webkit-user-select: none;
   user-select: none;">
 
-  <div class="row" id="playerSelect">
-    <button id="p1" class="btn btn-large btn-block btn-primary" type="button">Player 1</button>
+  <div class="container" id="playerSelect">
+    <div class="row">
+      <button id="p1" class="btn btn-large btn-block btn-primary" type="button">Player 1</button>
+    </div>
+    <div class="row">
     <button id="p2" class="btn btn-large btn-block btn-success" type="button">Player 2</button>
+    </div>
+    <div class="row">
     <button id="p3" class="btn btn-large btn-block btn-warning" type="button">Player 3</button>
+    </div>
+    <div class="row">
     <button id="p4" class="btn btn-large btn-block btn-danger" type="button">Player 4</button>
+    </div>
   </div>
 
-  <div id="results" class="well">
-   <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <div id="move" class="alert alert-block alert-success">
-     <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <h1 id="moveText">Correct!</h1>
-      <div class="row">
-        <div class="span12">
-          slide1
-          slide2
-          slide3
+  <div id="results" class="">
+    <div id="move" class="alert float-center">
+      <h2 id="moveText"></h2>
+        <div id="PlayerChoice">
         </div>
-      </div>
     </div>
 
     <div class="row">
@@ -82,6 +83,11 @@
    <div id="stack"></div>
 
    <script type="text/javascript">
+    cards=[]
+    PlayerCards1=[]
+    PlayerCards2=[]
+    PlayerCards3=[]
+    PlayerCards4=[]            
     CurrentPlayer=0
     nselect = 0
     selection = []
@@ -158,7 +164,8 @@
             }
             ctx.fill()
             ctx.stroke()
-          document.getElementById("game").appendChild(c)
+          cards.push(c)
+          //document.getElementById("game").appendChild(c)
         }
       }
     }    
@@ -214,8 +221,8 @@
           context.fill();
           context.stroke();
           context.closePath();
-
-          document.getElementById("game").appendChild(c)
+          cards.push(c)
+          //document.getElementById("game").appendChild(c)
           }else if (number[nn]==1){
           //mtop
           context.beginPath();
@@ -226,7 +233,8 @@
           context.fill();
           context.stroke();
           context.closePath();
-          document.getElementById("game").appendChild(c)            
+          cards.push(c)
+          //document.getElementById("game").appendChild(c)            
           }else if (number[nn]==2){
           //lowleft
           context.beginPath();
@@ -246,8 +254,9 @@
           context.lineTo(w/2+w/6.0, h/3.0+10);
           context.fill();
           context.stroke();
-          context.closePath();            
-          document.getElementById("game").appendChild(c)            
+          context.closePath();          
+          cards.push(c)
+          //document.getElementById("game").appendChild(c)            
           }
         }
       }
@@ -260,6 +269,7 @@
           var c=document.createElement("canvas")
           c.className="mem shape1 color"+cc+" tone"+tt+" count"+nn
           c.style.padding="0px 0px 0px 0px"
+          c.style.margin="0px 0px 0px 0px"
           c.style.width=w+"px";
           c.style.height=h+"px";
           c.width=w
@@ -290,39 +300,75 @@
             }
             ctx.fill()
             ctx.stroke()
-          document.getElementById("game").appendChild(c)
+            cards.push(c)  
+          //document.getElementById("game").appendChild(c)
         }
    		}
    	}
 
-(function($) {
-
-$.fn.randomize = function(childElem) {
-  return this.each(function() {
-      var $this = $(this);
-      var elems = $this.children(childElem);
-
-      elems.sort(function() { return (Math.round(Math.random())-0.5); });  
-
-      $this.remove(childElem);  
-
-      for(var i=0; i < elems.length; i++)
-        $this.append(elems[i]);      
-
-  });    
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
 }
-})(jQuery);
 
 (function($) {
   $.fn.render = function() {
     $("#game").show()
-    this.each(function(index){
-    if (index>11){
-      $(this).hide()
-    }else{
-      $(this).show()
+    cou = $("#game .mem").length
+    for (var i=0; i<(12-cou); i++){
+      x=cards.pop()
+      $(x).click(function(){
+        nselect += 1
+        $(this).css("border-style","solid")
+        $(this).css("border-width","2")
+        $(this).css("padding","0px 0px 0px 0px")
+        $(this).css("margin","0px 0px 0px 0px")
+        var sel = $(this).classes()
+        var seljoin = '.'+sel.join(".")
+        selection.push(sel)
+        selectionJoin.push(seljoin)
+        selection = array_unique(selection)
+        selectionJoin = array_unique(selectionJoin)
+        if (selectionJoin.length==3){
+            ans = CheckSelection()
+            if (ans==true){
+              for (var i=0;i<3;i++){
+                $(selectionJoin[i]).css("border-style","none").unbind('click').prependTo("#PlayerChoice")  
+              }
+              $("#playerSelect").show()
+              $("#game").hide()
+              $("#stack").hide()
+              aval=$("#score"+CurrentPlayer).text()
+              console.log(aval,CurrentPlayer)
+              $("#score"+CurrentPlayer).text(aval+1)
+              $("#moveText").text("ja!")
+              console.log("alles richtig")
+            }else{
+              console.log("wrong answer")
+              for (var i=0;i<3;i++){
+                $(selectionJoin[i]).css("border-style","none").unbind('click').prependTo("#PlayerChoice")  
+              }
+              $("#moveText").text("nein!")        
+              $("#playerSelect").show()
+              $("#game").hide()
+              $("#stack").hide()
+              aval=$("#score"+CurrentPlayer).text()
+              $("#score"+aval).text(aval-1) 
+              for (var i=0;i<3;i++){
+                $(selectionJoin[i]).css("border-style","none")
+              }
+            }
+          selectionJoin=[]
+          selection=[]
+        }
+      })
+      document.getElementById("game").appendChild(x)
     }
-    })
   }
 })(jQuery);
 
@@ -348,7 +394,7 @@ $.fn.randomize = function(childElem) {
 })(jQuery);
 
 for (var i=0; i<20; i++){
-  $("#game").randomize(".mem");
+  cards = shuffleArray(cards)
 }
 
 $("#p1").click(function(){
@@ -412,45 +458,22 @@ function CheckSelection(){
   }
 }
 
-$(".mem").click(function(){
-  nselect += 1
-  $(this).css("border-style","solid")
-  $(this).css("border-width","2")
-  $(this).css("padding","0px 0px 0px 0px")
-  var sel = $(this).classes()
-  var seljoin = '.'+sel.join(".")
-  selection.push(sel)
-  selectionJoin.push(seljoin)
-  selection = array_unique(selection)
-  selectionJoin = array_unique(selectionJoin)
-  if (selectionJoin.length==3){
-      ans = CheckSelection()
-      if (ans==true){
-        for (var i=0;i<3;i++){
-          $(selectionJoin[i]).css("border-style","none").prependTo("#stack")  
-        }
-        $("#playerSelect").show()
-        $("#game").hide()
-        $("#stack").hide()
-        aval=$("#score"+CurrentPlayer).text()
-        console.log(aval,CurrentPlayer)
-        $("#score"+CurrentPlayer).text(aval+1)
-        console.log("alles richtig")
-      }else{
-        console.log("wrong answer")
-        $("#playerSelect").show()
-        $("#game").hide()
-        $("#stack").hide()
-        aval=$("#score"+CurrentPlayer).text()
-        $("#score"+aval).text(aval-1) 
-        for (var i=0;i<3;i++){
-          $(selectionJoin[i]).css("border-style","none")
-        }
-      }
-    selectionJoin=[]
-    selection=[]
-  }
+function EndMove(){
+  $("#PlayerChoice .mem").each(function(ele){
+    $(this).css("border-style","none").unbind('click')
+    cards.unshift($(this).get(0))
+    $(this).remove()
+  })
+  console.log(PlayerCards1)
+  $("#results").hide()
+  $(".mem").render()
+}
+
+$("#results").click(function(){
+  EndMove()
 })
+
+
    </script>    
   </body>
  </html>
