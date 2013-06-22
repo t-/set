@@ -11,13 +11,19 @@ function shuffleArray(array) {
   (function($) {
   $.fn.render = function() {
     $("#game").show()
+    for (var i=0; i<20; i++){cards = shuffleArray(cards)}
     cou = $("#game .mem").length
     for (var i=0; i<(12-cou); i++){
       x=cards.pop()
+      $(x).css("border-style","solid")
+      $(x).css("border-width","2")
+      $(x).css("border-color","#efefef") 
+      $(x).css("float","left")
       $(x).click(function(){
         nselect += 1
         $(this).css("border-style","solid")
         $(this).css("border-width","2")
+        $(this).css("border-color","#333")
         $(this).css("padding","0px 0px 0px 0px")
         $(this).css("margin","0px 0px 0px 0px")
         var sel = $(this).classes()

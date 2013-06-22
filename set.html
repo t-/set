@@ -13,6 +13,7 @@
   -webkit-user-select: none;
   user-select: none;margin:0px 0px 0px 0px;overflow:hidden;">
 
+
   <div class="container" id="playerSelect">
     <div class="row">
       <button id="p1" class="btn btn-large btn-block btn-primary" type="button">Player 1</button>
@@ -94,21 +95,22 @@
     h=$(document).height()
     lwidth=3
     if (w>h){
-      w = Math.floor(w / 4.0)-16
-      h = Math.floor(h / 3.0)-12
+      w = Math.floor(w / 4.0)-5
+      h = Math.floor(h / 3.0)-13
     }else{
-      w = Math.floor(w / 3.0)-12
-      h = Math.floor(h / 4.0)-16
+      w = Math.floor(w / 3.0)-13
+      h = Math.floor(h / 4.0)-17
     }
     canvasBgColor="rgb(255,255,255)"
     color=['255,0,0','50, 205, 50 ','0, 0, 255']
-    tone=[0.0,0.3,1.0]
+    color=['39, 174, 96','192, 57, 43','41, 128, 185']
+    tone=[0.0,0.5,1.0]
     shape=['square','triangle','circle']
     number=[1,2,3]
+    $("body").height($("window").height())
     DrawCircle()
     DrawSquare()
     DrawTriangle()
-    for (var i=0; i<20; i++){cards = shuffleArray(cards)}
     $(".mem").render()
     $("#playerSelect").hide()
     $("#results").hide(   )
