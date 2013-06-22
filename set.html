@@ -13,29 +13,13 @@
   -webkit-user-select: none;
   user-select: none;margin:0px 0px 0px 0px;overflow:hidden;">
 
+  <div class="container" id="playerSelect"></div>
 
-  <div class="container" id="playerSelect">
-    <div class="row">
-      <button id="p1" class="btn btn-large btn-block btn-primary" type="button">Player 1</button>
-    </div>
-    <div class="row">
-    <button id="p2" class="btn btn-large btn-block btn-success" type="button">Player 2</button>
-    </div>
-    <div class="row">
-    <button id="p3" class="btn btn-large btn-block btn-warning" type="button">Player 3</button>
-    </div>
-    <div class="row">
-    <button id="p4" class="btn btn-large btn-block btn-danger" type="button">Player 4</button>
-    </div>
-  </div>
-
-  <div id="results" class="">
-    <div id="move" class="alert float-center">
-      <h2 id="moveText"></h2>
-        <div id="PlayerChoice">
-        </div>
-    </div>
-
+  <div id="results" style="display:block;float:left;margin:2% 10%">
+    <div id="PlayerChoice"></div>
+    
+    <br>
+    <p><h2 id="moveText"></h2></p>
     <div class="row">
       <div class="span4">
         <h1>
@@ -54,6 +38,11 @@
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td>0</td>
+              <td>Jay</td>
+              <td id="score0">0</td>
+            </tr>
             <tr>
               <td>1</td>
               <td>Rob</td>
@@ -74,6 +63,11 @@
               <td>Bob</td>
               <td id="score4">0</td>
             </tr>
+            <tr>
+              <td>5</td>
+              <td>Shu</td>
+              <td id="score5">0</td>
+            </tr>
           </tbody>
         </table>
       </div>     
@@ -83,10 +77,12 @@
   <script src="javascripts/game.js"></script>
   <script type="text/javascript">
     cards=[]
+    PlayerCards0=[]
     PlayerCards1=[]
     PlayerCards2=[]
     PlayerCards3=[]
-    PlayerCards4=[]            
+    PlayerCards4=[]
+    PlayerCards5=[]           
     CurrentPlayer=0
     nselect = 0
     selection = []
@@ -95,7 +91,7 @@
     h=$(document).height()
     lwidth=3
     if (w>h){
-      w = Math.floor(w / 4.0)-5
+      w = Math.floor(w / 4.0)-17
       h = Math.floor(h / 3.0)-13
     }else{
       w = Math.floor(w / 3.0)-13
@@ -107,13 +103,45 @@
     tone=[0.0,0.5,1.0]
     shape=['square','triangle','circle']
     number=[1,2,3]
-    $("body").height($("window").height())
+    $("body").height($(window).height())
+
+    PlayerColors=["#2ecc71","#3498db","#8e44ad","#2c3e50","#f1c40f","#c0392b","#ecf0f1"]
+    for (var i=0; i<6; i++){
+      d=document.createElement('div')
+      $(d).html("<h2 style='padding:0% 30%;'>Player "+i+"</2>")
+      $(d).height(Math.floor($(window).height()/4.0))
+      $(d).width(Math.floor($("#playerSelect").width()/2.0))
+      $(d).css("background-color",PlayerColors[i])
+      $(d).css("color","#ffffff")
+      $(d).attr("id","p"+i)
+      $(d).css("display","block")
+      $(d).css("float","left")
+      $("#playerSelect").append(d)
+    }
+      d=document.createElement('div')
+      $(d).html("<h2 style='padding:0% 40%;'>shuffle</2>")
+      $(d).height(Math.floor($(window).height()/4.0)-1)
+      $(d).width(Math.floor($("#playerSelect").width()))
+      $(d).css("background-color",PlayerColors[PlayerColors.length-1])
+      $(d).css("display","block")
+      $(d).css("color","#333")
+      $(d).css("float","left")
+      $("#playerSelect").append(d)
+
     DrawCircle()
     DrawSquare()
     DrawTriangle()
     $(".mem").render()
+
     $("#playerSelect").hide()
+    $("#playerSelectLegacy").hide()
     $("#results").hide(   )
+
+    $("#p0").click(function(){
+      $("#playerSelect").hide()
+      CurrentPlayer="0"
+      $("#results").show()
+    })
 
     $("#p1").click(function(){
       $("#playerSelect").hide()
@@ -136,6 +164,12 @@
     $("#p4").click(function(){
       $("#playerSelect").hide()
       CurrentPlayer="4"
+      $("#results").show()
+    })
+
+    $("#p5").click(function(){
+      $("#playerSelect").hide()
+      CurrentPlayer="5"
       $("#results").show()
     })
 

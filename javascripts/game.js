@@ -16,13 +16,13 @@ function shuffleArray(array) {
     for (var i=0; i<(12-cou); i++){
       x=cards.pop()
       $(x).css("border-style","solid")
-      $(x).css("border-width","2")
+      $(x).css("border-width","3")
       $(x).css("border-color","#efefef") 
       $(x).css("float","left")
       $(x).click(function(){
         nselect += 1
         $(this).css("border-style","solid")
-        $(this).css("border-width","2")
+        $(this).css("border-width","3")
         $(this).css("border-color","#333")
         $(this).css("padding","0px 0px 0px 0px")
         $(this).css("margin","0px 0px 0px 0px")
@@ -36,20 +36,21 @@ function shuffleArray(array) {
             ans = CheckSelection()
             if (ans==true){
               for (var i=0;i<3;i++){
-                $(selectionJoin[i]).css("border-style","none").unbind('click').prependTo("#PlayerChoice")  
+                $(selectionJoin[i]).css("border-color","#efefef") .unbind('click').prependTo("#PlayerChoice")  
               }
               $("#playerSelect").show()
               $("#game").hide()
               $("#stack").hide()
               aval=$("#score"+CurrentPlayer).text()
-              console.log(aval,CurrentPlayer)
-              $("#score"+CurrentPlayer).text(parseInt(aval)+1)
+              $("#score"+CurrentPlayer).text(parseInt(aval)-1)
+              console.log("player"+CurrentPlayer+" score"+aval+" New"+$("#score"+CurrentPlayer).text()+" res Cor")
+
               $("#moveText").text("ja!")
               console.log("alles richtig")
             }else{
               console.log("wrong answer")
               for (var i=0;i<3;i++){
-                $(selectionJoin[i]).css("border-style","none").unbind('click').prependTo("#PlayerChoice")  
+                $(selectionJoin[i]).css("border-color","#efefef") .unbind('click').prependTo("#PlayerChoice")  
               }
               $("#moveText").text("nein!")        
               $("#playerSelect").show()
@@ -57,8 +58,9 @@ function shuffleArray(array) {
               $("#stack").hide()
               aval=$("#score"+CurrentPlayer).text()
               $("#score"+CurrentPlayer).text(parseInt(aval)-1)
+              console.log("player"+CurrentPlayer+" score"+aval+" New"+$("#score"+CurrentPlayer).text()+" res Wro")
               for (var i=0;i<3;i++){
-                $(selectionJoin[i]).css("border-style","none")
+                $(selectionJoin[i]).css("border-color","#efefef") 
               }
             }
           selectionJoin=[]
@@ -130,7 +132,6 @@ function EndMove(){
     cards.unshift($(this).get(0))
     $(this).remove()
   })
-  console.log(PlayerCards1)
   $("#results").hide()
   $(".mem").render()
 }
