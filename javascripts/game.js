@@ -16,16 +16,12 @@ function shuffleArray(array) {
     for (var i=0; i<(12-cou); i++){
       x=cards.pop()
       $(x).css("border-style","solid")
-      $(x).css("border-width","3")
+      $(x).css("border-width","1.5%")
       $(x).css("border-color","#efefef") 
       $(x).css("float","left")
       $(x).click(function(){
         nselect += 1
-        $(this).css("border-style","solid")
-        $(this).css("border-width","3")
-        $(this).css("border-color","#333")
-        $(this).css("padding","0px 0px 0px 0px")
-        $(this).css("margin","0px 0px 0px 0px")
+        $(this).css("border-color","#34495e")
         var sel = $(this).classes()
         var seljoin = '.'+sel.join(".")
         selection.push(sel)

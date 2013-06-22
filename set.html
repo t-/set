@@ -89,7 +89,7 @@
     selectionJoin = []
     w=$(document).width()
     h=$(document).height()
-    lwidth=3
+    lwidth=4
     if (w>h){
       w = Math.floor(w / 4.0)-17
       h = Math.floor(h / 3.0)-13
@@ -106,28 +106,30 @@
     $("body").height($(window).height())
 
     PlayerColors=["#2ecc71","#3498db","#8e44ad","#2c3e50","#f1c40f","#c0392b","#ecf0f1"]
-    for (var i=0; i<6; i++){
-      d=document.createElement('div')
-      $(d).html("<h2 style='padding:0% 30%;'>Player "+i+"</2>")
-      $(d).height(Math.floor($(window).height()/4.0))
-      $(d).width(Math.floor($("#playerSelect").width()/2.0))
-      $(d).css("background-color",PlayerColors[i])
-      $(d).css("color","#ffffff")
-      $(d).attr("id","p"+i)
-      $(d).css("display","block")
-      $(d).css("float","left")
-      $("#playerSelect").append(d)
+    function RenderPlayerSelect(){
+      for (var i=0; i<6; i++){
+        d=document.createElement('div')
+        $(d).html("<h2 style='padding:0% 30%;'>Player "+i+"</2>")
+        $(d).height(Math.floor($(window).height()/4.0))
+        $(d).width(Math.floor($("#playerSelect").width()/2.0))
+        $(d).css("background-color",PlayerColors[i])
+        $(d).css("color","#ffffff")
+        $(d).attr("id","p"+i)
+        $(d).css("display","block")
+        $(d).css("float","left")
+        $("#playerSelect").append(d)
+      }
+        d=document.createElement('div')
+        $(d).html("<h2 style='padding:0% 40%;'>shuffle</2>")
+        $(d).height(Math.floor($(window).height()/4.0)-1)
+        $(d).width(Math.floor($("#playerSelect").width()))
+        $(d).css("background-color",PlayerColors[PlayerColors.length-1])
+        $(d).css("display","block")
+        $(d).css("color","#333")
+        $(d).css("float","left")
+        $("#playerSelect").append(d)
     }
-      d=document.createElement('div')
-      $(d).html("<h2 style='padding:0% 40%;'>shuffle</2>")
-      $(d).height(Math.floor($(window).height()/4.0)-1)
-      $(d).width(Math.floor($("#playerSelect").width()))
-      $(d).css("background-color",PlayerColors[PlayerColors.length-1])
-      $(d).css("display","block")
-      $(d).css("color","#333")
-      $(d).css("float","left")
-      $("#playerSelect").append(d)
-
+    RenderPlayerSelect()
     DrawCircle()
     DrawSquare()
     DrawTriangle()
