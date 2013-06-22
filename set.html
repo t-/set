@@ -6,11 +6,12 @@
     <link href="stylesheets/bootstrap.css" rel="stylesheet">
     <script src="javascripts/jquery.min.js"></script>
     <script src="javascripts/bootstrap.min.js"></script>
+    <script src="javascripts/draw.js"></script>
   </head>
-  <body style="background-color:rgb(236, 240, 241);  -moz-user-select: none;
+  <body style="background-color:rgb(255, 255, 255);  -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
-  user-select: none;">
+  user-select: none;margin:0px 0px 0px 0px;overflow:hidden;">
 
   <div class="container" id="playerSelect">
     <div class="row">
@@ -77,12 +78,9 @@
       </div>     
     </div>
   </div>            
-
-
-   <div id="game"></div>
-   <div id="stack"></div>
-
-   <script type="text/javascript">
+  <div id="game"></div>
+  <script src="javascripts/game.js"></script>
+  <script type="text/javascript">
     cards=[]
     PlayerCards1=[]
     PlayerCards2=[]
@@ -92,388 +90,56 @@
     nselect = 0
     selection = []
     selectionJoin = []
-    w=$(window).width()
-    h=$(window).height()
-    lwidth="2"
+    w=$(document).width()
+    h=$(document).height()
+    lwidth=3
     if (w>h){
-      w = w / 4 - 15
-      h = h / 3 - 15
+      w = Math.floor(w / 4.0)-16
+      h = Math.floor(h / 3.0)-12
     }else{
-      w = w / 3 - 15
-      h = h / 4 - 15
+      w = Math.floor(w / 3.0)-12
+      h = Math.floor(h / 4.0)-16
     }
-
-
-    //color=['192,57,43','142, 68, 173','46, 204, 113']
+    canvasBgColor="rgb(255,255,255)"
     color=['255,0,0','50, 205, 50 ','0, 0, 255']
     tone=[0.0,0.3,1.0]
     shape=['square','triangle','circle']
-
     number=[1,2,3]
+    DrawCircle()
+    DrawSquare()
+    DrawTriangle()
+    for (var i=0; i<20; i++){cards = shuffleArray(cards)}
+    $(".mem").render()
+    $("#playerSelect").hide()
+    $("#results").hide(   )
 
-    for (var cc=0; cc<color.length; cc++){
-      for (var tt=0; tt<tone.length; tt++){
-        for (var nn=0; nn<number.length; nn++){
-          var c=document.createElement("canvas")
-          c.className="mem shape3 color"+cc+" tone"+tt+" count"+nn
-          c.style.width=w+"px";
-          c.style.height=h+"px";
-          c.width=w
-          c.height=h
-          var ctx=c.getContext("2d");
-          col_fill='rgba('+color[cc]+","+tone[tt]+')'
-          col_stroke='rgb('+color[cc]+')'
-          ctx.beginPath()
-            ctx.strokeStyle="rgba(51,51,51,0.3)"
-            ctx.fillStyle="rgb(255,255,255)"
-            ctx.rect(3,3,w-6,h-6)
-            ctx.lineWidth="0"
-            ctx.fill()
-          ctx.stroke()
-          ctx.beginPath()
-            ctx.fillStyle=col_fill
-            ctx.strokeStyle=col_stroke
-            ctx.lineWidth=lwidth
-            if (number[nn]==1){
-              //ctx.rect(w/3.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
-              ctx.moveTo(w/3.0+10,h/3.0+h/6.0);
-              ctx.bezierCurveTo(w/3.0+10,2*h/3.0, 2*w/3.0-10,2*h/3.0, 2*w/3.0-10,h/3.0+h/6.0);
-              ctx.bezierCurveTo(2*w/3.0-10,h/3  , w/3.0+10,h/3.0, w/3.0+10,h/3.0+h/6.0);
-            }else if(number[nn]==2){
-              //left
-              ctx.moveTo(w/6.0+10,h/3.0+h/6.0);
-              ctx.bezierCurveTo(w/6.0+10,2*h/3.0, w/6.0+w/3.0-10,2*h/3.0, w/6.0+w/3.0-10,h/3.0+h/6.0);
-              ctx.bezierCurveTo(w/6.0+w/3.0-10,h/3  , w/6.0+10,h/3.0, w/6.0+10,h/3.0+h/6.0)
-              //right
-              ctx.moveTo(2*w/3.0+10-w/6.0,h/3.0+h/6.0);
-              ctx.bezierCurveTo(2*w/3.0+10-w/6.0,2*h/3.0, 3*w/3.0-10-w/6.0,2*h/3.0, 3*w/3.0-10-w/6.0,h/3.0+h/6.0);
-              ctx.bezierCurveTo(3*w/3.0-10-w/6.0,h/3  , 2*w/3.0+10-w/6.0,h/3.0, 2*w/3.0+10-w/6.0,h/3.0+h/6.0);
-            }else if(number[nn]==3){
-              //center
-              ctx.moveTo(w/3.0+10,h/3.0+h/6.0);
-              ctx.bezierCurveTo(w/3.0+10,2*h/3.0, 2*w/3.0-10,2*h/3.0, 2*w/3.0-10,h/3.0+h/6.0);
-              ctx.bezierCurveTo(2*w/3.0-10,h/3  , w/3.0+10,h/3.0, w/3.0+10,h/3.0+h/6.0);
-              //left
-              ctx.moveTo(10,h/3.0+h/6.0);
-              ctx.bezierCurveTo(10,2*h/3.0, w/3.0-10,2*h/3.0, w/3.0-10,h/3.0+h/6.0);
-              ctx.bezierCurveTo(w/3.0-10,h/3  , 10,h/3.0, 10,h/3.0+h/6.0)
-              //right
-              ctx.moveTo(2*w/3.0+10,h/3.0+h/6.0);
-              ctx.bezierCurveTo(2*w/3.0+10,2*h/3.0, 3*w/3.0-10,2*h/3.0, 3*w/3.0-10,h/3.0+h/6.0);
-              ctx.bezierCurveTo(3*w/3.0-10,h/3  , 2*w/3.0+10,h/3.0, 2*w/3.0+10,h/3.0+h/6.0);
-            }
-            ctx.fill()
-            ctx.stroke()
-          cards.push(c)
-          //document.getElementById("game").appendChild(c)
-        }
-      }
-    }    
-    
-    for (var cc=0; cc<color.length; cc++){
-      for (var tt=0; tt<tone.length; tt++){
-        for (var nn=0; nn<number.length; nn++){
-          var c=document.createElement("canvas")
-          c.className="mem shape2 color"+cc+" tone"+tt+" count"+nn
-          c.style.width=w+"px";
-          c.style.height=h+"px";
-          c.width=w
-          c.height=h
-          var context=c.getContext("2d");
-          context.beginPath()
-            context.strokeStyle="rgba(51,51,51,0.3)"
-            context.fillStyle="rgb(255,255,255)"
-            context.rect(3,3,w-6,h-6)
-            context.lineWidth="0"
-            context.fill()
-          context.stroke()  
-          context.fillStyle   = "rgba("+color[cc]+","+tone[tt]+")";
-          context.strokeStyle = "rgb("+color[cc]+")";
-          context.lineWidth   = lwidth;
+    $("#p1").click(function(){
+      $("#playerSelect").hide()
+      CurrentPlayer="1"
+      $("#results").show()
+    })
 
-          if (number[nn]==3){
-          //mtop
-          context.beginPath();
-          context.moveTo(w/2, h/3.0+10); // give the (x,y) coordinates
-          context.lineTo(2*w/3.0-10, 2*h/3.0-5);
-          context.lineTo(w/3.0+10, 2*h/3.0-5);
-          context.lineTo(w/2, h/3.0+10);
-          context.fill();
-          context.stroke();
-          context.closePath();
+    $("#p2").click(function(){
+      $("#playerSelect").hide()
+      CurrentPlayer="2"
+      $("#results").show()  
+    })
 
-          //lowleft
-          context.beginPath();
-          context.moveTo(w/2-w/3.0, h/3.0+10); // give the (x,y) coordinates
-          context.lineTo(2*w/3.0-10-w/3.0, 2*h/3.0-5);
-          context.lineTo(w/3.0+10-w/3.0, 2*h/3.0-5);
-          context.lineTo(w/2-w/3.0, h/3.0+10);
-          context.fill();
-          context.stroke();
-          context.closePath();
+    $("#p3").click(function(){
+      $("#playerSelect").hide()
+      CurrentPlayer="3"
+      $("#results").show()
+    })
 
-          //lowright
-          context.beginPath();
-          context.moveTo(w/2+w/3.0, h/3.0+10); // give the (x,y) coordinates
-          context.lineTo(2*w/3.0-10+w/3.0, 2*h/3.0-5);
-          context.lineTo(w/3.0+10+w/3.0, 2*h/3.0-5);
-          context.lineTo(w/2+w/3.0, h/3.0+10);
-          context.fill();
-          context.stroke();
-          context.closePath();
-          cards.push(c)
-          //document.getElementById("game").appendChild(c)
-          }else if (number[nn]==1){
-          //mtop
-          context.beginPath();
-          context.moveTo(w/2, h/3.0+10); // give the (x,y) coordinates
-          context.lineTo(2*w/3.0-10, 2*h/3.0-5);
-          context.lineTo(w/3.0+10, 2*h/3.0-5);
-          context.lineTo(w/2, h/3.0+10);
-          context.fill();
-          context.stroke();
-          context.closePath();
-          cards.push(c)
-          //document.getElementById("game").appendChild(c)            
-          }else if (number[nn]==2){
-          //lowleft
-          context.beginPath();
-          context.moveTo(w/2-w/6.0, h/3.0+10); // give the (x,y) coordinates
-          context.lineTo(2*w/3.0-10-w/6.0, 2*h/3.0-5);
-          context.lineTo(w/3.0+10-w/6.0, 2*h/3.0-5);
-          context.lineTo(w/2-w/6.0, h/3.0+10);
-          context.fill();
-          context.stroke();
-          context.closePath();
+    $("#p4").click(function(){
+      $("#playerSelect").hide()
+      CurrentPlayer="4"
+      $("#results").show()
+    })
 
-          //lowright
-          context.beginPath();
-          context.moveTo(w/2+w/6.0, h/3.0+10); // give the (x,y) coordinates
-          context.lineTo(2*w/3.0-10+w/6.0, 2*h/3.0-5);
-          context.lineTo(w/3.0+10+w/6.0, 2*h/3.0-5);
-          context.lineTo(w/2+w/6.0, h/3.0+10);
-          context.fill();
-          context.stroke();
-          context.closePath();          
-          cards.push(c)
-          //document.getElementById("game").appendChild(c)            
-          }
-        }
-      }
-    }
-    
-   	//$('.game').html('hello'+w+'h'+h)
-   	for (var cc=0; cc<color.length; cc++){
-      for (var tt=0; tt<tone.length; tt++){
-        for (var nn=0; nn<number.length; nn++){
-          var c=document.createElement("canvas")
-          c.className="mem shape1 color"+cc+" tone"+tt+" count"+nn
-          c.style.padding="0px 0px 0px 0px"
-          c.style.margin="0px 0px 0px 0px"
-          c.style.width=w+"px";
-          c.style.height=h+"px";
-          c.width=w
-          c.height=h
-          var ctx=c.getContext("2d");
-          col_fill='rgba('+color[cc]+","+tone[tt]+')'
-          col_stroke='rgb('+color[cc]+')'
-          ctx.beginPath()
-            ctx.strokeStyle="rgba(51,51,51,0.3)"
-            ctx.fillStyle="rgb(255,255,255)"
-            ctx.rect(3,3,w-6,h-6)
-            ctx.lineWidth="0"
-            ctx.fill()
-          ctx.stroke()
-          ctx.beginPath()
-            ctx.fillStyle=col_fill
-            ctx.strokeStyle=col_stroke
-            ctx.lineWidth=lwidth
-            if (number[nn]==1){
-              ctx.rect(w/3.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
-            }else if(number[nn]==2){
-              ctx.rect(w/6.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
-              ctx.rect(w/6.0+w/3.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
-            }else if(number[nn]==3){
-              ctx.rect(10,h/3.0+10,w/3.0-20,h/3.0-20);
-              ctx.rect(w/3.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
-              ctx.rect(2*w/3.0+10,h/3.0+10,w/3.0-20,h/3.0-20);
-            }
-            ctx.fill()
-            ctx.stroke()
-            cards.push(c)  
-          //document.getElementById("game").appendChild(c)
-        }
-   		}
-   	}
-
-function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
-}
-
-(function($) {
-  $.fn.render = function() {
-    $("#game").show()
-    cou = $("#game .mem").length
-    for (var i=0; i<(12-cou); i++){
-      x=cards.pop()
-      $(x).click(function(){
-        nselect += 1
-        $(this).css("border-style","solid")
-        $(this).css("border-width","2")
-        $(this).css("padding","0px 0px 0px 0px")
-        $(this).css("margin","0px 0px 0px 0px")
-        var sel = $(this).classes()
-        var seljoin = '.'+sel.join(".")
-        selection.push(sel)
-        selectionJoin.push(seljoin)
-        selection = array_unique(selection)
-        selectionJoin = array_unique(selectionJoin)
-        if (selectionJoin.length==3){
-            ans = CheckSelection()
-            if (ans==true){
-              for (var i=0;i<3;i++){
-                $(selectionJoin[i]).css("border-style","none").unbind('click').prependTo("#PlayerChoice")  
-              }
-              $("#playerSelect").show()
-              $("#game").hide()
-              $("#stack").hide()
-              aval=$("#score"+CurrentPlayer).text()
-              console.log(aval,CurrentPlayer)
-              $("#score"+CurrentPlayer).text(aval+1)
-              $("#moveText").text("ja!")
-              console.log("alles richtig")
-            }else{
-              console.log("wrong answer")
-              for (var i=0;i<3;i++){
-                $(selectionJoin[i]).css("border-style","none").unbind('click').prependTo("#PlayerChoice")  
-              }
-              $("#moveText").text("nein!")        
-              $("#playerSelect").show()
-              $("#game").hide()
-              $("#stack").hide()
-              aval=$("#score"+CurrentPlayer).text()
-              $("#score"+aval).text(aval-1) 
-              for (var i=0;i<3;i++){
-                $(selectionJoin[i]).css("border-style","none")
-              }
-            }
-          selectionJoin=[]
-          selection=[]
-        }
-      })
-      document.getElementById("game").appendChild(x)
-    }
-  }
-})(jQuery);
-
-(function ($) {
-    $.fn.classes = function (callback) {
-        var classes = [];
-        $.each(this, function (i, v) {
-            var splitClassName = v.className.split(/\s+/);
-            for (var j in splitClassName) {
-                var className = splitClassName[j];
-                if ('' !== className) {
-                    classes.push(className); // replace with 'classes.unshift(className);' to put classes in order of their appearance
-                }
-            }
-        });
-        if ('function' === typeof callback) {
-            for (var i in classes) {
-                callback(classes[i]);
-            }
-        }
-        return classes;
-    };
-})(jQuery);
-
-for (var i=0; i<20; i++){
-  cards = shuffleArray(cards)
-}
-
-$("#p1").click(function(){
-  $("#playerSelect").hide()
-  CurrentPlayer="1"
-  $("#results").show()
-})
-
-$("#p2").click(function(){
-  $("#playerSelect").hide()
-  CurrentPlayer="2"
-  $("#results").show()  
-})
-
-$("#p3").click(function(){
-  $("#playerSelect").hide()
-  CurrentPlayer="3"
-  $("#results").show()
-})
-
-$("#p4").click(function(){
-  $("#playerSelect").hide()
-  CurrentPlayer="4"
-  $("#results").show()
-})
-
-
-   $(".mem").render()
-   $("#playerSelect").hide()
-   $("#results").hide(   )
-   
-   function array_unique(arrayName) {
-      var newArray = new Array();
-      label:for(var i=0; i<arrayName.length;i++ ) { 
-         for(var j=0; j<newArray.length;j++ ) {
-            if(newArray[j] == arrayName[i])
-               continue label;
-         }
-         newArray[newArray.length] = arrayName[i];
-      }
-      return newArray;
-   }
-
-function CheckSelection(){
-  kill = false
-  for (var i=0; i<4; i++){
-    console.log("property "+i)
-    if ((selection[0][i]==selection[1][i] && selection[1][i]==selection[2][i]) || (selection[0][i]!=selection[1][i] && selection[1][i]!=selection[2][i] && selection[0][i]!=selection[2][i]) ){
-      kill = false
-      console.log("property "+i+" correct")
-    }else{
-      kill = true
-    }
-    if (kill==true){
-      console.log("wrong!")
-      return false
-    }
-  }
-  if (kill==false){
-    return true
-  }
-}
-
-function EndMove(){
-  $("#PlayerChoice .mem").each(function(ele){
-    $(this).css("border-style","none").unbind('click')
-    cards.unshift($(this).get(0))
-    $(this).remove()
-  })
-  console.log(PlayerCards1)
-  $("#results").hide()
-  $(".mem").render()
-}
-
-$("#results").click(function(){
-  EndMove()
-})
-
-
-   </script>    
+    $("#results").click(function(){
+      EndMove()
+    })
+   </script>
   </body>
  </html>
