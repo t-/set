@@ -1,5 +1,4 @@
 set
 ===
 
-bio.gy set!
-http://www.biob.io/set
+DEMO http://www.biob.io/set
