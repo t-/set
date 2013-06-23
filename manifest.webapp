@@ -1,10 +1,14 @@
 {
-  "name": "Bio.gy Set!",
+  "name": "Flat Set!",
   "description": "Warning: Highly addictive",
   "launch_path": "/set",
+  "icons": {
+    "128": "/images/icon-128.png"
+  },
   "developer": {
     "name": "Timo Graen",
-    "url": "http://t-.github.io"
+    "url": "http://biob.io/set"
   },
-  "default_locale": "en"
+  "default_locale": "en",
+  "fullscreen": "true"
 }
