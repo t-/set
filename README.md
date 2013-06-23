@@ -2,4 +2,4 @@ set
 ===
 
 bio.gy set!
-http://t-.github.io/set/
+http://www.biob.io/set
