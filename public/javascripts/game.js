@@ -16,10 +16,10 @@ function shuffleArray(array) {
     for (var i=0; i<(12-cou); i++){
       x=cards.pop()
       $(x).css("border-style","solid")
-      $(x).css("border-width","1.5%")
+      $(x).css("border-width","2px")
       $(x).css("border-color","#efefef") 
       $(x).css("float","left")
-      $(x).click(function(){
+      $(x).mousedown(function(){
         nselect += 1
         $(this).css("border-color","#34495e")
         var sel = $(this).classes()
@@ -29,45 +29,41 @@ function shuffleArray(array) {
         selection = array_unique(selection)
         selectionJoin = array_unique(selectionJoin)
         if (selectionJoin.length==3){
-            ans = CheckSelection()
-            if (ans==true){
-              for (var i=0;i<3;i++){
-                $(selectionJoin[i]).css("border-color","#efefef") .unbind('click').prependTo("#PlayerChoice")  
-              }
-              $("#playerSelect").show()
-              $("#game").hide()
-              $("#stack").hide()
-              aval=$("#score"+CurrentPlayer).text()
-              $("#score"+CurrentPlayer).text(parseInt(aval)-1)
-              console.log("player"+CurrentPlayer+" score"+aval+" New"+$("#score"+CurrentPlayer).text()+" res Cor")
-
-              $("#moveText").text("ja!")
-              console.log("alles richtig")
-            }else{
-              console.log("wrong answer")
-              for (var i=0;i<3;i++){
-                $(selectionJoin[i]).css("border-color","#efefef") .unbind('click').prependTo("#PlayerChoice")  
-              }
-              $("#moveText").text("nein!")        
-              $("#playerSelect").show()
-              $("#game").hide()
-              $("#stack").hide()
-              aval=$("#score"+CurrentPlayer).text()
-              $("#score"+CurrentPlayer).text(parseInt(aval)-1)
-              console.log("player"+CurrentPlayer+" score"+aval+" New"+$("#score"+CurrentPlayer).text()+" res Wro")
-              for (var i=0;i<3;i++){
-                $(selectionJoin[i]).css("border-color","#efefef") 
-              }
-            }
-          selectionJoin=[]
-          selection=[]
+          $("#playerSelect").show()
+          $("#game").hide()
+          $("#stack").hide()
         }
       })
       $("#game").append(x)
-      //document.getElementById("game").appendChild(x)
     }
   }
 })(jQuery);
+
+function VerifyMove(){
+    ans = CheckSelection()
+    if (ans==true){
+      for (var i=0;i<3;i++){
+        $(selectionJoin[i]).css("border-color","#efefef").unbind('mousedown').prependTo("#PlayerChoice")  
+      }
+      aval=$("#score"+CurrentPlayer).text()
+      $("#score"+CurrentPlayer).text(parseInt(aval)+1)
+      $("#moveText").text("CORRECT! Player"+CurrentPlayer)
+    }else{
+      for (var i=0;i<3;i++){
+        $(selectionJoin[i]).css("border-color","#efefef").unbind('mousedown').prependTo("#PlayerChoice")  
+      }
+      $("#moveText").text("WRONG! Player"+CurrentPlayer)
+      aval=$("#score"+CurrentPlayer).text()
+      if (aval > 0){
+        $("#score"+CurrentPlayer).text(parseInt(aval)-1)
+      }
+      for (var i=0;i<3;i++){
+        $(selectionJoin[i]).css("border-color","#efefef") 
+      }
+    }
+  selectionJoin=[]
+  selection=[]
+}
 
 (function ($) {
     $.fn.classes = function (callback) {
@@ -124,7 +120,7 @@ function CheckSelection(){
 
 function EndMove(){
   $("#PlayerChoice .mem").each(function(ele){
-    $(this).css("border-style","none").unbind('click')
+    $(this).css("border-style","none").unbind('mousedown')
     cards.unshift($(this).get(0))
     $(this).remove()
   })

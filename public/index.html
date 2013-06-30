@@ -17,6 +17,7 @@
   <div class="container" id="playerSelect"></div>
 
   <div id="results" style="display:block;float:left;margin:2% 10%">
+
     <div id="PlayerChoice"></div>
     
     <br>
@@ -92,11 +93,11 @@
     h=$(document).height()
     lwidth=4
     if (w>h){
-      w = Math.floor(w / 4.0)-17
-      h = Math.floor(h / 3.0)-13
+      w = Math.floor(w / 4.0)-4
+      h = Math.floor(h / 3.0)-4
     }else{
-      w = Math.floor(w / 3.0)-13
-      h = Math.floor(h / 4.0)-17
+      w = Math.floor(w / 3.0)-4
+      h = Math.floor(h / 4.0)-4
     }
     canvasBgColor="rgb(255,255,255)"
     color=['255,0,0','50, 205, 50 ','0, 0, 255']
@@ -107,6 +108,18 @@
     $("body").height($(window).height())
 
     PlayerColors=["#2ecc71","#3498db","#8e44ad","#2c3e50","#f1c40f","#c0392b","#ecf0f1"]
+
+    function ShuffleCards(){
+      $(selectionJoin[i]).css("border-color","#efefef") .unbind('mousedown').prependTo("#PlayerChoice")  
+      for (var i=0; i<20; i++){cards = shuffleArray(cards)}
+      for (var i=0;i<3;i++){
+        $(selectionJoin[i]).css("border-color","#efefef").unbind('mousedown').prependTo("#PlayerChoice")  
+      }
+      selectionJoin=[]
+      selection=[]
+      EndMove()
+    }
+
     function RenderPlayerSelect(){
       for (var i=0; i<6; i++){
         d=document.createElement('div')
@@ -120,63 +133,66 @@
         $(d).css("float","left")
         $("#playerSelect").append(d)
       }
-        d=document.createElement('div')
-        $(d).html("<h2 style='padding:0% 40%;'>shuffle</2>")
-        $(d).height(Math.floor($(window).height()/4.0)-1)
-        $(d).width(Math.floor($("#playerSelect").width()))
-        $(d).css("background-color",PlayerColors[PlayerColors.length-1])
-        $(d).css("display","block")
-        $(d).css("color","#333")
-        $(d).css("float","left")
-        $("#playerSelect").append(d)
+      d=document.createElement('div')
+      $(d).html("<h2 style='padding:0% 40%;'>shuffle</2>")
+      $(d).height(Math.floor($(window).height()/4.0)-1)
+      $(d).width(Math.floor($("#playerSelect").width()))
+      $(d).css("background-color",PlayerColors[PlayerColors.length-1])
+      $(d).css("display","block")
+      $(d).css("color","#333")
+      $(d).attr("id","pshuffle")
+      $(d).css("float","left")
+      $(d).mousedown(function(){
+        ShuffleCards()
+        $("#playerSelect").hide()
+      })
+      $("#playerSelect").append(d)
+        $("#p0").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=0
+            VerifyMove()
+            $("#results").show()
+        })
+        $("#p1").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=1
+            VerifyMove()
+            $("#results").show()
+        })
+        $("#p2").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=2
+            VerifyMove()
+            $("#results").show()
+        })        
+        $("#p3").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=3
+            VerifyMove()
+            $("#results").show()
+        })
+        $("#p4").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=4
+            VerifyMove()
+            $("#results").show()
+        })
+        $("#p5").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=5
+            VerifyMove()
+            $("#results").show()
+        })
     }
     RenderPlayerSelect()
     DrawCircle()
     DrawSquare()
     DrawTriangle()
     $(".mem").render()
-
     $("#playerSelect").hide()
     $("#playerSelectLegacy").hide()
     $("#results").hide(   )
-
-    $("#p0").click(function(){
-      $("#playerSelect").hide()
-      CurrentPlayer="0"
-      $("#results").show()
-    })
-
-    $("#p1").click(function(){
-      $("#playerSelect").hide()
-      CurrentPlayer="1"
-      $("#results").show()
-    })
-
-    $("#p2").click(function(){
-      $("#playerSelect").hide()
-      CurrentPlayer="2"
-      $("#results").show()  
-    })
-
-    $("#p3").click(function(){
-      $("#playerSelect").hide()
-      CurrentPlayer="3"
-      $("#results").show()
-    })
-
-    $("#p4").click(function(){
-      $("#playerSelect").hide()
-      CurrentPlayer="4"
-      $("#results").show()
-    })
-
-    $("#p5").click(function(){
-      $("#playerSelect").hide()
-      CurrentPlayer="5"
-      $("#results").show()
-    })
-
-    $("#results").click(function(){
+    $("#results").mousedown(function(){
       EndMove()
     })
    </script>
