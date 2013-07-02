@@ -78,6 +78,7 @@
   <div id="game"></div>
   <script src="javascripts/game.js"></script>
   <script type="text/javascript">
+    $(document).ready(function(){
     cards=[]
     PlayerCards0=[]
     PlayerCards1=[]
@@ -195,6 +196,7 @@
     $("#results").mousedown(function(){
       EndMove()
     })
+    })//end of jquery.ready()
    </script>
   </body>
  </html>
