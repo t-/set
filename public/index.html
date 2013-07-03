@@ -5,6 +5,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>set</title>
     <link href="stylesheets/bootstrap.css" rel="stylesheet">
+    <link href="stylesheets/bootstrap-responsive.css" rel="stylesheet">
     <script src="javascripts/jquery.min.js"></script>
     <script src="javascripts/bootstrap.min.js"></script>
     <script src="javascripts/draw.js"></script>
@@ -19,7 +20,7 @@
   <div id="results" style="display:block;float:left;margin:2% 10%">
 
     <div id="PlayerChoice"></div>
-    
+
     <br>
     <p><h2 id="moveText"></h2></p>
     <div class="row">
@@ -72,32 +73,33 @@
             </tr>
           </tbody>
         </table>
-      </div>     
+      </div>
     </div>
-  </div>            
+  </div>
   <div id="game"></div>
   <script src="javascripts/game.js"></script>
   <script type="text/javascript">
     $(document).ready(function(){
+    w=$(document).width()
+    h=$(document).height()
+
     cards=[]
     PlayerCards0=[]
     PlayerCards1=[]
     PlayerCards2=[]
     PlayerCards3=[]
     PlayerCards4=[]
-    PlayerCards5=[]           
+    PlayerCards5=[]
     CurrentPlayer=0
     nselect = 0
     selection = []
     selectionJoin = []
-    w=$(document).width()
-    h=$(document).height()
     lwidth=4
     if (w>h){
       w = Math.floor(w / 4.0)-4
       h = Math.floor(h / 3.0)-4
     }else{
-      w = Math.floor(w / 3.0)-4
+      w = Math.floor(w / 3.0)-18
       h = Math.floor(h / 4.0)-4
     }
     canvasBgColor="rgb(255,255,255)"
@@ -111,10 +113,10 @@
     PlayerColors=["#2ecc71","#3498db","#8e44ad","#2c3e50","#f1c40f","#c0392b","#ecf0f1"]
 
     function ShuffleCards(){
-      $(selectionJoin[i]).css("border-color","#efefef") .unbind('mousedown').prependTo("#PlayerChoice")  
+      $(selectionJoin[i]).css("border-color","#efefef") .unbind('mousedown').prependTo("#PlayerChoice")
       for (var i=0; i<20; i++){cards = shuffleArray(cards)}
       for (var i=0;i<3;i++){
-        $(selectionJoin[i]).css("border-color","#efefef").unbind('mousedown').prependTo("#PlayerChoice")  
+        $(selectionJoin[i]).css("border-color","#efefef").unbind('mousedown').prependTo("#PlayerChoice")
       }
       selectionJoin=[]
       selection=[]
@@ -165,7 +167,7 @@
             CurrentPlayer=2
             VerifyMove()
             $("#results").show()
-        })        
+        })
         $("#p3").click(function(){
             $("#playerSelect").hide()
             CurrentPlayer=3
