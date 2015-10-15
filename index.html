@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>set</title>
+    <link href="stylesheets/bootstrap.css" rel="stylesheet">
+    <link href="stylesheets/bootstrap-responsive.css" rel="stylesheet">
+    <script src="javascripts/jquery.min.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
+    <script src="javascripts/draw.js"></script>
+  </head>
+  <body style="background-color:rgb(255, 255, 255);  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;margin:0px 0px 0px 0px;overflow:hidden;">
+
+  <div class="container" id="playerSelect"></div>
+
+  <div id="results" style="display:block;float:left;margin:2% 10%">
+
+    <div id="PlayerChoice"></div>
+
+    <br>
+    <p><h2 id="moveText"></h2></p>
+    <div class="row">
+      <div class="span4">
+        <h1>
+          Scores:
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span8">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Player</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="fill:red;">
+              <td>0</td>
+              <td>Jay</td>
+              <td id="score0">0</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>Rob</td>
+              <td id="score1">0</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Tom</td>
+              <td id="score2">0</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Fin</td>
+              <td id="score3">0</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Bob</td>
+              <td id="score4">0</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Shu</td>
+              <td id="score5">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="game"></div>
+  <script src="javascripts/game.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+    w=$(document).width()
+    h=$(document).height()
+
+    cards=[]
+    PlayerCards0=[]
+    PlayerCards1=[]
+    PlayerCards2=[]
+    PlayerCards3=[]
+    PlayerCards4=[]
+    PlayerCards5=[]
+    CurrentPlayer=0
+    nselect = 0
+    selection = []
+    selectionJoin = []
+    lwidth=4
+    if (w>h){
+      w = Math.floor(w / 4.0)-4
+      h = Math.floor(h / 3.0)-4
+    }else{
+      w = Math.floor(w / 3.0)-18
+      h = Math.floor(h / 4.0)-4
+    }
+    canvasBgColor="rgb(255,255,255)"
+    color=['255,0,0','50, 205, 50 ','0, 0, 255']
+    color=['39, 174, 96','192, 57, 43','41, 128, 185']
+    tone=[0.0,0.5,1.0]
+    shape=['square','triangle','circle']
+    number=[1,2,3]
+    $("body").height($(window).height())
+
+    PlayerColors=["#2ecc71","#3498db","#8e44ad","#2c3e50","#f1c40f","#c0392b","#ecf0f1"]
+
+    function ShuffleCards(){
+      $(selectionJoin[i]).css("border-color","#efefef") .unbind('mousedown').prependTo("#PlayerChoice")
+      for (var i=0; i<20; i++){cards = shuffleArray(cards)}
+      for (var i=0;i<3;i++){
+        $(selectionJoin[i]).css("border-color","#efefef").unbind('mousedown').prependTo("#PlayerChoice")
+      }
+      selectionJoin=[]
+      selection=[]
+      EndMove()
+    }
+
+    function RenderPlayerSelect(){
+      for (var i=0; i<6; i++){
+        d=document.createElement('div')
+        $(d).html("<h2 style='padding:0% 30%;'>Player "+i+"</2>")
+        $(d).height(Math.floor($(window).height()/4.0))
+        $(d).width(Math.floor($("#playerSelect").width()/2.0))
+        $(d).css("background-color",PlayerColors[i])
+        $(d).css("color","#ffffff")
+        $(d).attr("id","p"+i)
+        $(d).css("display","block")
+        $(d).css("float","left")
+        $("#playerSelect").append(d)
+      }
+      d=document.createElement('div')
+      $(d).html("<h2 style='padding:0% 40%;'>shuffle</2>")
+      $(d).height(Math.floor($(window).height()/4.0)-1)
+      $(d).width(Math.floor($("#playerSelect").width()))
+      $(d).css("background-color",PlayerColors[PlayerColors.length-1])
+      $(d).css("display","block")
+      $(d).css("color","#333")
+      $(d).attr("id","pshuffle")
+      $(d).css("float","left")
+      $(d).mousedown(function(){
+        ShuffleCards()
+        $("#playerSelect").hide()
+      })
+      $("#playerSelect").append(d)
+        $("#p0").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=0
+            VerifyMove()
+            $("#results").show()
+        })
+        $("#p1").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=1
+            VerifyMove()
+            $("#results").show()
+        })
+        $("#p2").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=2
+            VerifyMove()
+            $("#results").show()
+        })
+        $("#p3").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=3
+            VerifyMove()
+            $("#results").show()
+        })
+        $("#p4").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=4
+            VerifyMove()
+            $("#results").show()
+        })
+        $("#p5").click(function(){
+            $("#playerSelect").hide()
+            CurrentPlayer=5
+            VerifyMove()
+            $("#results").show()
+        })
+    }
+    RenderPlayerSelect()
+    DrawCircle()
+    DrawSquare()
+    DrawTriangle()
+    $(".mem").render()
+    $("#playerSelect").hide()
+    $("#playerSelectLegacy").hide()
+    $("#results").hide(   )
+    $("#results").mousedown(function(){
+      EndMove()
+    })
+    })//end of jquery.ready()
+   </script>
+  </body>
+ </html>
